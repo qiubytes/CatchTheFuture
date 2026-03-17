@@ -5,6 +5,10 @@ const { ccclass, property } = _decorator;
 export class Basket extends Component {
     private offset: Vec3 = new Vec3();
     private _isDragging: boolean = false;
+    @property(Vec2)
+    maxBoundary: Vec2 = new Vec2();
+    @property(Vec2)
+    minBoundary: Vec2 = new Vec2();
     onTouchMove(event: EventTouch) {
         if (!this._isDragging) return;
 
@@ -17,6 +21,7 @@ export class Basket extends Component {
         let worldTouch = event.getLocation();
         let touchInParent = uiTransform.convertToNodeSpaceAR((new Vec3(worldTouch.x, worldTouch.y, 0)));
         let newPos = new Vec3(touchInParent.x - this.offset.x, touchInParent.y - this.offset.y, 0);
+        newPos = this.clampPosition(newPos);
         this.node.setPosition(newPos);
     }
     onTouchStart(event: EventTouch) {
@@ -34,7 +39,17 @@ export class Basket extends Component {
         this._isDragging = true;
     }
     onTouchEnd(event: EventTouch) {
-
+        this._isDragging = false;
+    }
+    clampPosition(position: Vec3): Vec3 { 
+        // console.log("原始pos");
+        // console.log(position);
+        //限制X 和 Y 不拖出屏幕
+        let clampedX = Math.max(this.minBoundary.x, Math.min(position.x, this.maxBoundary.x));//相当于三元运算
+        let clampedY = Math.max(this.minBoundary.y, Math.min(position.y, this.maxBoundary.y));
+        let clampedVec3 = new Vec3(clampedX, clampedY, 0);
+        // console.log(clampedVec3);
+        return clampedVec3;
     }
     addTouch() {
         this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);

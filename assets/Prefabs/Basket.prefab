@@ -713,8 +713,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
+      "width": 300,
+      "height": 200
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -738,6 +738,16 @@
     "_enabled": true,
     "__prefab": {
       "__id__": 35
+    },
+    "maxBoundary": {
+      "__type__": "cc.Vec2",
+      "x": -250,
+      "y": -390
+    },
+    "minBoundary": {
+      "__type__": "cc.Vec2",
+      "x": 250,
+      "y": 360
     },
     "_id": ""
   },
