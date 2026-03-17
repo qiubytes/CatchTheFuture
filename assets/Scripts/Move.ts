@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, EventTouch, Node, UITransform, Vec2, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Basket')
@@ -8,16 +8,28 @@ export class Basket extends Component {
     onTouchMove(event: EventTouch) {
         if (!this._isDragging) return;
 
-        let touchLocation = event.getUILocation();
-        //减去偏移量 不让他立即跑到手指位置
-        let newPosition = new Vec3(touchLocation.x - this.offset.x, touchLocation.y - this.offset.y, 0);
-        this.node.setPosition(newPosition);
+        // let touchLocation = event.getUILocation();
+        // //减去偏移量 不让他立即跑到手指位置
+        // let newPosition = new Vec3(touchLocation.x - this.offset.x, touchLocation.y - this.offset.y, 0);
+        // this.node.setPosition(newPosition);
+        const parent = this.node.parent;
+        const uiTransform = parent.getComponent(UITransform);
+        let worldTouch = event.getLocation();
+        let touchInParent = uiTransform.convertToNodeSpaceAR((new Vec3(worldTouch.x, worldTouch.y, 0)));
+        let newPos = new Vec3(touchInParent.x - this.offset.x, touchInParent.y - this.offset.y, 0);
+        this.node.setPosition(newPos);
     }
     onTouchStart(event: EventTouch) {
-        let touchLocation = event.getUILocation();//手指触摸的位置
-        let nodeLocation = this.node.getPosition();//当前节点的位置
-        //计算位置偏移量
-        this.offset.set(touchLocation.x - nodeLocation.x, touchLocation.y - nodeLocation.y, 0);
+        // let touchLocation = event.getUILocation();//手指触摸的位置
+        // let nodeLocation = this.node.getPosition();//当前节点的位置
+        // //计算位置偏移量
+        // this.offset.set(touchLocation.x - nodeLocation.x, touchLocation.y - nodeLocation.y, 0);
+        const parent = this.node.parent;
+        const uiTransform = parent.getComponent(UITransform);
+        let worldTouch = event.getLocation();
+        let touchInParent = uiTransform.convertToNodeSpaceAR(new Vec3(worldTouch.x, worldTouch.y, 0));
+        let nodePos = this.node.position;
+        this.offset.set(touchInParent.x - nodePos.x, touchInParent.y - nodePos.y, 0);
         console.log(this.offset);
         this._isDragging = true;
     }
