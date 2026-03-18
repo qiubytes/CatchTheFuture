@@ -1,4 +1,4 @@
-import { _decorator, Component, find, Game, instantiate, Label, macro, Node, Prefab, random, randomRange, randomRangeInt } from 'cc';
+import { _decorator, BoxCollider2D, Component, find, Game, instantiate, Label, macro, Node, Prefab, random, randomRange, randomRangeInt, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -31,6 +31,10 @@ export class GameManager extends Component {
         if (this.usedIndex.has(rd)) return;
         this.usedIndex.add(rd);
         let worklabelNode = instantiate(this.workLabelPrefab);
+        worklabelNode.getComponent(BoxCollider2D).size.width = worklabelNode.getComponent(UITransform).contentSize.width;
+        worklabelNode.getComponent(BoxCollider2D).size.height = worklabelNode.getComponent(UITransform).contentSize.height;
+        worklabelNode.getComponent(BoxCollider2D).apply();
+
         worklabelNode.getComponent(Label).string = this.workNameArray[rd];
         worklabelNode.parent = find("Canvas/WorkLabelList");//设置父节点
         worklabelNode.setPosition(randomRange(-320, 320), 670);

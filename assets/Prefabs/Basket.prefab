@@ -245,7 +245,7 @@
       "__id__": 10
     },
     "enabledContactListener": false,
-    "bullet": false,
+    "bullet": true,
     "awakeOnLoad": true,
     "_group": 1,
     "_type": 1,
@@ -455,7 +455,7 @@
       "__id__": 20
     },
     "enabledContactListener": false,
-    "bullet": false,
+    "bullet": true,
     "awakeOnLoad": true,
     "_group": 1,
     "_type": 1,
@@ -631,7 +631,7 @@
       "__id__": 28
     },
     "enabledContactListener": false,
-    "bullet": false,
+    "bullet": true,
     "awakeOnLoad": true,
     "_group": 1,
     "_type": 1,
@@ -764,6 +764,7 @@
       "__id__": 0
     },
     "fileId": "744LqVppRAx6E3jMBf1snL",
+    "instance": null,
     "targetOverrides": null
   }
 ]
