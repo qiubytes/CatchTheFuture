@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, Node, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, EventTouch, instantiate, Node, Prefab, tween, UITransform, Vec2, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Basket')
@@ -9,6 +9,8 @@ export class Basket extends Component {
     maxBoundary: Vec2 = new Vec2();
     @property(Vec2)
     minBoundary: Vec2 = new Vec2();
+    @property(Prefab)
+    futureWorkLabel: Prefab = null;
     onTouchMove(event: EventTouch) {
         if (!this._isDragging) return;
 
@@ -41,7 +43,7 @@ export class Basket extends Component {
     onTouchEnd(event: EventTouch) {
         this._isDragging = false;
     }
-    clampPosition(position: Vec3): Vec3 { 
+    clampPosition(position: Vec3): Vec3 {
         // console.log("原始pos");
         // console.log(position);
         //限制X 和 Y 不拖出屏幕
@@ -71,7 +73,13 @@ export class Basket extends Component {
         this.removeTouch();
     }
     start() {
-
+        this.scheduleOnce(() => {
+            this.removeTouch();
+            let FutureWorkLabel = instantiate(this.futureWorkLabel);
+            FutureWorkLabel.setParent(this.node);
+            let t1 = tween(FutureWorkLabel).to(1.5, { position: new Vec3(0, 100, 0) }, { easing: "backInOut" });
+            t1.start();
+        }, 1);
     }
 
     update(deltaTime: number) {
