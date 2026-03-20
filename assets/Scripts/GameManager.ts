@@ -9,6 +9,14 @@ export class GameManager extends Component {
 
     @property(Prefab)
     workLabelPrefab: Prefab;
+
+    @property(Node)
+    TimerLabel: Node;
+
+    @property(Number)
+    public totalTime: number = 8;
+
+    private currentTime: number = 0;
     //使用过的索引
     private usedIndex: Set<number> = new Set<number>();
 
@@ -21,6 +29,7 @@ export class GameManager extends Component {
         }
     }
     protected start(): void {
+        this.currentTime = this.totalTime;
         // this.schedule(this.instantiateLabel,0.5, 1, macro.REPEAT_FOREVER);
         this.schedule(this.instantiateLabel.bind(this), 1, macro.REPEAT_FOREVER);
     }
@@ -38,6 +47,15 @@ export class GameManager extends Component {
         worklabelNode.getComponent(Label).string = this.workNameArray[rd];
         worklabelNode.parent = find("Canvas/WorkLabelList");//设置父节点
         worklabelNode.setPosition(randomRange(-320, 320), 670);
+    }
+    protected update(dt: number): void {
+        if (this.currentTime >= 0) {
+            this.currentTime -= dt;
+            this.TimerLabel.getComponent(Label).string = this.currentTime.toFixed(2);
+        } else {
+            this.TimerLabel.getComponent(Label).string = "0.00";
+            console.log("游戏结束");
+        }
     }
 
 }

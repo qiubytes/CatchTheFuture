@@ -1,4 +1,5 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab, tween, UITransform, Vec2, Vec3 } from 'cc';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Basket')
@@ -78,8 +79,12 @@ export class Basket extends Component {
             let FutureWorkLabel = instantiate(this.futureWorkLabel);
             FutureWorkLabel.setParent(this.node);
             let t1 = tween(FutureWorkLabel).to(1.5, { position: new Vec3(0, 100, 0) }, { easing: "backInOut" });
-            t1.start();
-        }, 1);
+            // t1.start();
+            let t2 = tween(this.node).to(2, { position: new Vec3(0, 220, 0) });
+            t1.call(() => {
+                t2.start()
+            }).start();
+        }, GameManager.instance.totalTime);
     }
 
     update(deltaTime: number) {
