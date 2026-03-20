@@ -80,7 +80,7 @@ export class Basket extends Component {
             FutureWorkLabel.setParent(this.node);
             let t1 = tween(FutureWorkLabel).to(1.5, { position: new Vec3(0, 100, 0) }, { easing: "backInOut" });
             // t1.start();
-            let t2 = tween(this.node).to(2, { position: new Vec3(0, 220, 0) });
+            let t2 = tween(this.node).to(2, { position: new Vec3(0, 160, 0) });
             t1.call(() => {
                 t2.start()
             }).start();

@@ -1,9 +1,9 @@
-import { _decorator, BoxCollider2D, Component, find, Game, instantiate, Label, macro, Node, Prefab, random, randomRange, randomRangeInt, UITransform } from 'cc';
+import { _decorator, BoxCollider2D, Component, director, find, Game, instantiate, Label, macro, Node, Prefab, random, randomRange, randomRangeInt, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
 export class GameManager extends Component {
-    private static _instance: GameManager;
+    private static _instance: GameManager = new GameManager();
     @property([String])
     workNameArray: string[] = [];
 
@@ -16,6 +16,9 @@ export class GameManager extends Component {
     @property(Number)
     public totalTime: number = 8;
 
+    @property(Node)
+    public restartPanel: Node;
+
     private currentTime: number = 0;
     //使用过的索引
     private usedIndex: Set<number> = new Set<number>();
@@ -25,7 +28,10 @@ export class GameManager extends Component {
     }
     protected onLoad(): void {
         if (!GameManager._instance) {
-            GameManager._instance = this;//这里的this是 加载场景的时候 挂载到节点的时候实例化的对象
+            GameManager._instance = new GameManager();
+            //这里的this是 加载场景的时候 挂载到节点的时候实例化的对象
+        } else {
+            GameManager._instance = this;
         }
     }
     protected start(): void {
@@ -55,7 +61,13 @@ export class GameManager extends Component {
         } else {
             this.TimerLabel.getComponent(Label).string = "0.00";
             console.log("游戏结束");
+            this.scheduleOnce(() => {
+                this.restartPanel.active = true; 
+            }, 5);
         }
+    }
+    public restartGame() {
+        director.loadScene("scene");
     }
 
 }
